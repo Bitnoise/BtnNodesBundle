@@ -51,3 +51,6 @@ btn_nodes:
 ``` bash
 $ php app/console doctrine:schema:update --force
 ```
+
+
+### Add gedmo orm mappings

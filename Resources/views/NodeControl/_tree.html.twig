@@ -1,0 +1,8 @@
+<li id="{{ node.id }}">
+    <a href="#">{{ node.title }}</a> <a href="#"><i class="icon-plus"></i></a> <a href="#"><i class="icon-minus"></i></a>
+    <ul>
+        {% for node in node.children %}
+            {% include 'BtnNodesBundle:NodeControl:_tree.html.twig' %}
+        {% endfor %}
+    </ul>
+</li>
