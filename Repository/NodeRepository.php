@@ -19,6 +19,7 @@ class NodeRepository extends NestedTreeRepository
      */
     public function getNodeForSlug($slug)
     {
-        //todo
+        //take slug and find node that will match it
+
     }
 }

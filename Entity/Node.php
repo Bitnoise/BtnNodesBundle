@@ -25,7 +25,6 @@ class Node
      */
     private $title;
 
-
     /**
      * @ORM\Column(name="slug", type="string", length=64)
      */
@@ -68,6 +67,11 @@ class Node
      */
     private $children;
 
+    /**
+     * @ORM\Column(name="route", type="string", nullable=true)
+     */
+    private $route;
+
     public function getId()
     {
         return $this->id;
@@ -108,5 +112,150 @@ class Node
     public function getChildren()
     {
         return $this->children;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set lft
+     *
+     * @param integer $lft
+     * @return Node
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+    
+        return $this;
+    }
+
+    /**
+     * Get lft
+     *
+     * @return integer 
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * Set lvl
+     *
+     * @param integer $lvl
+     * @return Node
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+    
+        return $this;
+    }
+
+    /**
+     * Get lvl
+     *
+     * @return integer 
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * Set rgt
+     *
+     * @param integer $rgt
+     * @return Node
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+    
+        return $this;
+    }
+
+    /**
+     * Get rgt
+     *
+     * @return integer 
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * Set root
+     *
+     * @param integer $root
+     * @return Node
+     */
+    public function setRoot($root)
+    {
+        $this->root = $root;
+    
+        return $this;
+    }
+
+    /**
+     * Get root
+     *
+     * @return integer 
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * Set route
+     *
+     * @param string $route
+     * @return Node
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+    
+        return $this;
+    }
+
+    /**
+     * Get route
+     *
+     * @return string 
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \Btn\NodesBundle\Entity\Node $children
+     * @return Node
+     */
+    public function addChildren(\Btn\NodesBundle\Entity\Node $children)
+    {
+        $this->children[] = $children;
+    
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \Btn\NodesBundle\Entity\Node $children
+     */
+    public function removeChildren(\Btn\NodesBundle\Entity\Node $children)
+    {
+        $this->children->removeElement($children);
     }
 }
