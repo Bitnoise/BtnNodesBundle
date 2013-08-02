@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Btn\NodesBundle\Entity\Node;
-
+use Btn\NodesBundle\Form\NodeType;
 /**
  * Nodes controller.
  *
@@ -74,44 +74,65 @@ class NodeControlController extends BaseController
     /**
      * Edit node params
      *
-     * @Route("/edit", name="cp_edit_node")
+     * @Route("/edit/{id}", name="cp_edit_node")
      * @Template()
      */
-    public function editAction(Request $request)
+    public function editAction($id, Request $request)
     {
-        $node = $this->findEntityOr404('BtnNodesBundle:Node', $request->get('id'));
+        $node   = $this->findEntityOr404('BtnNodesBundle:Node', $request->get('id'));
+        $form   = $this->createForm(new NodeType(), $node);
+        $result = null;
 
-        return array();
+        //form processing
+        $result = $this->processForm($node, $form, $request);
+
+        //prepare content
+        $content = $this->renderView('BtnNodesBundle:NodeControl:_form.html.twig', array(
+            'form'       => $form->createView(),
+            'id'         => $id
+        ));
+
+        //valid or without post
+        if ($result === true || $result === null) {
+
+            return $this->renderJson($content, 'success');
+        //invalid
+        } elseif ($result === false) {
+
+            return $this->renderJson($content, 'error');
+        }
     }
 
     /**
-     * @Route("/test", name="cp_nodes_test")
+     * Select node content
+     *
+     * @Route("/content", name="cp_content_for_node")
+     * @Template()
      */
-    public function testAction()
+    public function contentAction(Request $request)
     {
-        $this->em = $this->getDoctrine()->getManager();
+        //prepare content
+        $content = $this->renderView('BtnNodesBundle:NodeControl:_content.html.twig', array(
+        ));
 
-        $food = new Node();
-        $food->setTitle('Main menu');
+        return $this->renderJson($content, 'succes');
+    }
 
-        $fruits = new Node();
-        $fruits->setTitle('Fruits');
-        $fruits->setParent($food);
+    private function processForm($entity, &$form, $request)
+    {
+        if ($request->getMethod() == 'POST' && $request->get($form->getName())) {
+            $form->bind($request);
 
-        $vegetables = new Node();
-        $vegetables->setTitle('Vegetables');
-        $vegetables->setParent($food);
+            if ($form->isValid()) {
+                $em = $this->getManager();
+                $em->persist($entity);
+                $em->flush();
 
-        $carrots = new Node();
-        $carrots->setTitle('Carrots');
-        $carrots->setParent($vegetables);
+                return true;
+            } else {
 
-        $this->em->persist($food);
-        $this->em->persist($fruits);
-        $this->em->persist($vegetables);
-        $this->em->persist($carrots);
-        $this->em->flush();
-
-        die();
+                return false;
+            }
+        }
     }
 }

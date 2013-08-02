@@ -21,11 +21,9 @@ class NodeController extends BaseController
      */
     public function resolveAction($url = null, $dupa = '')
     {
-        //ok I have node with some alias to other method ie:
-        // /about-us/news  ->  /news
-
-        if ($url == 'about-us/news') {
-            $route = '/news';
+        //resolve node by url
+        if ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForSlug($url)) {
+            $route = '/' . $node->getRoute();
             $match = $this->get('router')->match($route);
 
             if (isset($match['_controller'])) {

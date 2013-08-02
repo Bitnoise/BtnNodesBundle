@@ -17,9 +17,19 @@ class NodeRepository extends NestedTreeRepository
      *
      * @return Node|null
      */
-    public function getNodeForSlug($slug)
+    public function getNodeForSlug($url)
     {
-        //take slug and find node that will match it
+        $qb = $this->createQueryBuilder('n')
+            ->select('n')
+        ;
 
+        if (empty($url)) {
+            $qb->andWhere('n.url IS NULL');
+        } else {
+            $qb->andWhere('n.url = :url');
+            $qb->setParameter('url', $url);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

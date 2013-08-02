@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="nodes")
  * use repository for handy tree functions
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Btn\NodesBundle\Repository\NodeRepository")
  */
 class Node
@@ -72,6 +73,11 @@ class Node
      */
     private $route;
 
+    /**
+     * @ORM\Column(name="url", type="string", nullable=true)
+     */
+    private $url;
+
     public function getId()
     {
         return $this->id;
@@ -120,7 +126,7 @@ class Node
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Set lft
      *
@@ -130,14 +136,14 @@ class Node
     public function setLft($lft)
     {
         $this->lft = $lft;
-    
+
         return $this;
     }
 
     /**
      * Get lft
      *
-     * @return integer 
+     * @return integer
      */
     public function getLft()
     {
@@ -153,14 +159,14 @@ class Node
     public function setLvl($lvl)
     {
         $this->lvl = $lvl;
-    
+
         return $this;
     }
 
     /**
      * Get lvl
      *
-     * @return integer 
+     * @return integer
      */
     public function getLvl()
     {
@@ -176,14 +182,14 @@ class Node
     public function setRgt($rgt)
     {
         $this->rgt = $rgt;
-    
+
         return $this;
     }
 
     /**
      * Get rgt
      *
-     * @return integer 
+     * @return integer
      */
     public function getRgt()
     {
@@ -199,14 +205,14 @@ class Node
     public function setRoot($root)
     {
         $this->root = $root;
-    
+
         return $this;
     }
 
     /**
      * Get root
      *
-     * @return integer 
+     * @return integer
      */
     public function getRoot()
     {
@@ -222,14 +228,14 @@ class Node
     public function setRoute($route)
     {
         $this->route = $route;
-    
+
         return $this;
     }
 
     /**
      * Get route
      *
-     * @return string 
+     * @return string
      */
     public function getRoute()
     {
@@ -245,7 +251,7 @@ class Node
     public function addChildren(\Btn\NodesBundle\Entity\Node $children)
     {
         $this->children[] = $children;
-    
+
         return $this;
     }
 
@@ -258,4 +264,64 @@ class Node
     {
         $this->children->removeElement($children);
     }
+
+    /**
+     * @return string
+     */
+    public function getFullSlug()
+    {
+        $slug       = "";
+        $parentNode = $this->getParent();
+        if ($parentNode != null) {
+            $parentSlug = $parentNode->getFullSlug();
+            if (!empty($parentSlug)) {
+                $slug = rtrim($parentSlug, "/") . "/";
+            }
+        }
+
+        $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
+
+        return $slug;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Node
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     *
+     * Update full url for this node
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+     public function updateUrl()
+     {
+        //don't update url for root nodes
+        $parentNode = $this->getParent();
+        if ($parentNode != null) {
+            $this->url = $this->getFullSlug();
+        }
+
+        //fix url for all childrens ?
+     }
 }
