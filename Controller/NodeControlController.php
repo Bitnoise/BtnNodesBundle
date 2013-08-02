@@ -3,7 +3,7 @@
 namespace Btn\NodesBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Btn\BaseBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,7 +14,7 @@ use Btn\NodesBundle\Entity\Node;
  *
  * @Route("/control/nodes")
  */
-class NodeControlController extends Controller
+class NodeControlController extends BaseController
 {
     /**
      * Lists all Nodes.
@@ -34,21 +34,41 @@ class NodeControlController extends Controller
     /**
      * Add new node
      *
-     * @Route("/", name="cp_add_node")
+     * @Route("/add", name="cp_add_node")
      */
-    public function addAction()
+    public function addAction(Request $request)
     {
-        //TODO
+        $parent = $this->findEntity('BtnNodesBundle:Node', $request->get('id'));
+        $node = new Node();
+        $node->setTitle('new item');
+        if ($parent) {
+            $node->setParent($parent);
+        }
+
+        $this->getManager()->persist($node);
+        $this->getManager()->flush();
+
+        $msg = $this->get('translator')->trans('node.created');
+        $this->get('session')->getFlashBag()->add('success', $msg);
+
+        return $this->redirect($this->generateUrl('cp_nodes'));
     }
 
     /**
      * Add new node
      *
-     * @Route("/", name="cp_remove_node")
+     * @Route("/remove", name="cp_remove_node")
      */
-    public function removeAction()
+    public function removeAction(Request $request)
     {
-        //TODO
+        $node = $this->findEntityOr404('BtnNodesBundle:Node', $request->get('id'));
+        $this->getManager()->remove($node);
+        $this->getManager()->flush();
+
+        $msg = $this->get('translator')->trans('node.removed');
+        $this->get('session')->getFlashBag()->add('success', $msg);
+
+        return $this->redirect($this->generateUrl('cp_nodes'));
     }
 
     /**

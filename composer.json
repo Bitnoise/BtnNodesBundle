@@ -16,8 +16,15 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.*",
-        "gedmo/doctrine-extensions": "*"
+        "gedmo/doctrine-extensions": "*",
+        "bitnoise/base-bundle": "dev-master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:Bitnoise/BtnBaseBundle.git"
+        }
+    ],
     "autoload": {
         "psr-0": { "Btn\\NodesBundle": "" }
     },
