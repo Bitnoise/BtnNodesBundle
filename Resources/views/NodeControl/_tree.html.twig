@@ -1,5 +1,5 @@
 <li id="{{ node.id }}">
-    <a href="#">{{ node.title }}</a> <a href="{{ url('cp_add_node', {'id': node.id}) }}"><i class="icon-plus"></i></a> <a href="{{ url('cp_remove_node', {'id': node.id}) }}"><i class="icon-minus"></i></a>
+    <a href="{{ url('cp_edit_node', {'id': node.id}) }}">{{ node.title }}</a> <a href="{{ url('cp_add_node', {'id': node.id}) }}"><i class="icon-plus"></i></a> <a href="{{ url('cp_remove_node', {'id': node.id}) }}"><i class="icon-minus"></i></a>
     <ul>
         {% for node in node.children %}
             {% include 'BtnNodesBundle:NodeControl:_tree.html.twig' %}

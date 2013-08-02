@@ -25,4 +25,14 @@ class BtnNodesExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
+
+    // public function prepend(ContainerBuilder $container)
+    // {
+    //     $cmfRoutingExtraConfig['chain']['routers_by_id']['router.default'] = 100;
+    //     $cmfRoutingExtraConfig['chain']['replace_symfony_router'] = true;
+    //     $container->prependExtensionConfig('cmf_routing', $cmfRoutingExtraConfig);
+
+    //     $configs = $container->getExtensionConfig($this->getAlias());
+    //     $config = $this->processConfiguration(new Configuration(), $configs);
+    // }
 }

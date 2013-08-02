@@ -72,6 +72,19 @@ class NodeControlController extends BaseController
     }
 
     /**
+     * Edit node params
+     *
+     * @Route("/edit", name="cp_edit_node")
+     * @Template()
+     */
+    public function editAction(Request $request)
+    {
+        $node = $this->findEntityOr404('BtnNodesBundle:Node', $request->get('id'));
+
+        return array();
+    }
+
+    /**
      * @Route("/test", name="cp_nodes_test")
      */
     public function testAction()
