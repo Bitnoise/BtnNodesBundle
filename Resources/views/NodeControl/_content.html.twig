@@ -1,3 +1,5 @@
 <div>
-    <h2>Select content for this node</h2>
+    {% for provider in providers %}
+        <a href="#">{{ provider.nodeProvider }}</a> <br/>
+    {% endfor %}
 </div>

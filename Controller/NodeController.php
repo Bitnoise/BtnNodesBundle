@@ -35,7 +35,6 @@ class NodeController extends BaseController
 
                 //store as referrer
                 $this->get('session')->set('_btn_slug', $url);
-
                 $response = $this->forward($match['_controller'], $context);
 
                 //something here?

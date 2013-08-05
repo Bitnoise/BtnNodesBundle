@@ -111,8 +111,12 @@ class NodeControlController extends BaseController
      */
     public function contentAction(Request $request)
     {
+        //get all content providers
+        $providers = $this->getRepository('BtnNodesBundle:NodeService')->findAll();
+
         //prepare content
         $content = $this->renderView('BtnNodesBundle:NodeControl:_content.html.twig', array(
+            'providers' => $providers
         ));
 
         return $this->renderJson($content, 'succes');
