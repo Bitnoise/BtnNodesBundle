@@ -11,12 +11,12 @@
 
     // The actual plugin constructor
     function Plugin( element, options ) {
-        this.element = element;
+        this.element   = element;
 
-        this.options = $.extend( {}, defaults, options) ;
+        this.options   = $.extend( {}, defaults, options) ;
 
-        this._defaults    = defaults;
-        this._name        = pluginName;
+        this._defaults = defaults;
+        this._name     = pluginName;
 
         this.init();              //initialize
     }
@@ -28,7 +28,7 @@
         this.attachModal();
     };
 
-    //assign change events
+    // Assign change events
     Plugin.prototype.attachModal = function () {
         var self = this;
         $(this.element).click(function(ev) {

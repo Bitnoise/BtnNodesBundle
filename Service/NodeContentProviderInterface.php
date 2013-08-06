@@ -2,11 +2,12 @@
 
 namespace Btn\NodesBundle\Service;
 
-use Symfony\Component\HttpFoundation\Request;
-
 interface NodeContentProviderInterface
 {
     public function getForm();
 
-    public function resolveRouteName(Request $request);
+    public function resolveRouteName($dataForm = array());
+
+    public function resolveControlRouteName($dataForm = array());
+
 }

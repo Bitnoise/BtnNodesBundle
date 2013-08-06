@@ -1,0 +1,41 @@
+{% from 'BtnCrudBundle::breadcrumb.html.twig' import breadcrumb %}
+{% extends '::control.html.twig' %}
+
+{% block content %}
+
+<h4>Website sitemap</h4>
+
+<div class="row-fluid">
+    {% for node in topNodes %}
+        <div class="span6">
+            <ul class="tree">
+                {% include 'BtnNodesBundle:NodeControl:_simple_tree.html.twig' %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ breadcrumb({'cp_node': 'crud.breadcrumb.list'}) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+        '@BtnNodesBundle/Resources/public/css/*'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block javascripts %}
+    {% javascripts
+        '@BtnNodesBundle/Resources/public/js/jq.confirmModal.js'
+        '@BtnNodesBundle/Resources/public/js/jq.selectNodeContent.js'
+        '@BtnNodesBundle/Resources/public/js/node.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

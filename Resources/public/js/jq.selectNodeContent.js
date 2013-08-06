@@ -63,12 +63,59 @@
                 //
                 self.modal.removeData('modal').modal({
                     show:true
-                })
+                });
+
+                //
+                self.attachBundleSelector();
+
             }, 'json');
 
             return false;
         });
     };
+
+    Plugin.prototype.attachBundleSelector = function() {
+        var self = this;
+        this.modal.find('a.select-bundle').on('click', function() {
+
+            console.log($(this).attr('href'));
+
+            var href  = $(this).attr('href');
+
+            //call ajax
+            $.get(href, function(data) {
+                console.log(data);
+                self.modal.find('.modal-body').html(data.content);
+
+                self.attachFormSubmit();
+            }, 'json');
+
+
+            return false;
+        });
+    };
+
+    Plugin.prototype.attachFormSubmit = function () {
+        self = this;
+        this.modal.find('.modal-body').on('submit', 'form', function() {
+            var form = $(this);
+            var querystring = form.serialize();
+            $.post(form.attr('action'), querystring, function(data) {
+                if (data.verdict == 'success') {
+                    // console.log('OK');
+                    //close modal
+                    self.modal.modal('hide');
+                } else {
+                    // console.log('FAIL');
+                    //error - replace the form with populated errors
+                }
+                form.parent().empty().append(data.content);
+            }, 'json');
+
+            return false;
+        });
+    };
+
 
     // A plugin wrapper around the constructor,
     $.fn[pluginName] = function ( options ) {

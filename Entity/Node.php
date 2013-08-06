@@ -74,6 +74,16 @@ class Node
     private $route;
 
     /**
+     * @ORM\Column(name="control_route", type="string", nullable=true)
+     */
+    private $controlRoute;
+
+    /**
+     * @ORM\Column(name="provider", type="string", nullable=true)
+     */
+    private $provider;
+
+    /**
      * @ORM\Column(name="url", type="string", nullable=true)
      */
     private $url;
@@ -324,4 +334,50 @@ class Node
 
         //fix url for all childrens ?
      }
+
+    /**
+     * Set controlRoute
+     *
+     * @param string $controlRoute
+     * @return Node
+     */
+    public function setControlRoute($controlRoute)
+    {
+        $this->controlRoute = $controlRoute;
+
+        return $this;
+    }
+
+    /**
+     * Get controlRoute
+     *
+     * @return string
+     */
+    public function getControlRoute()
+    {
+        return $this->controlRoute;
+    }
+
+    /**
+     * Set provider
+     *
+     * @param string $provider
+     * @return Node
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * Get provider
+     *
+     * @return string
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="nodes")
  * use repository for handy tree functions
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Btn\NodesBundle\Repository\NodeRepository")
  */
 class Node
@@ -71,6 +72,16 @@ class Node
      * @ORM\Column(name="route", type="string", nullable=true)
      */
     private $route;
+
+    /**
+     * @ORM\Column(name="control_route", type="string", nullable=true)
+     */
+    private $controlRoute;
+
+    /**
+     * @ORM\Column(name="provider", type="string", nullable=true)
+     */
+    private $provider;
 
     /**
      * @ORM\Column(name="url", type="string", nullable=true)
@@ -277,8 +288,50 @@ class Node
                 $slug = rtrim($parentSlug, "/") . "/";
             }
         }
-        $slug = $slug . $this->getSlug();
+
+        $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
 
         return $slug;
     }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Node
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     *
+     * Update full url for this node
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+     public function updateUrl()
+     {
+        //don't update url for root nodes
+        $parentNode = $this->getParent();
+        if ($parentNode != null) {
+            $this->url = $this->getFullSlug();
+        }
+
+        //fix url for all childrens ?
+     }
 }

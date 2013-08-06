@@ -1,0 +1,18 @@
+<li id="{{ node.id }}" >
+    {% if node.lvl > 0 %}
+        <a href="#" title="edit">{{ node.title }}</a> <em>/{{ node.slug }}</em> |
+        <em class="provider">
+            {% if node.provider %}
+                {{ node.provider }} {% if node.controlRoute %}<a href="{{ node.controlRoute }}">edit</a>{% endif %}
+            {% else %}
+                no content assigned
+            {% endif %}
+        </em>
+
+    {% else %}<h4>{{ node.title }}</h4>{% endif %}
+    <ul>
+        {% for node in node.children %}
+            {% include 'BtnNodesBundle:NodeControl:_simple_tree.html.twig' %}
+        {% endfor %}
+    </ul>
+</li>

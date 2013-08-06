@@ -1,5 +1,5 @@
 <div>
     {% for provider in providers %}
-        <a href="#">{{ provider.nodeProvider }}</a> <br/>
+        <a href="{{ url('cp_assign_content_for_node', {'id': provider.id, 'node': node}) }}" class="select-bundle">{{ provider.nodeProvider }}</a> <br/>
     {% endfor %}
 </div>

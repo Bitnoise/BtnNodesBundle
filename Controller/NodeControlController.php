@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Btn\NodesBundle\Entity\Node;
 use Btn\NodesBundle\Form\NodeType;
+
 /**
  * Nodes controller.
  *
@@ -16,6 +17,21 @@ use Btn\NodesBundle\Form\NodeType;
  */
 class NodeControlController extends BaseController
 {
+    /**
+     * Lists all Nodes - easy view
+     *
+     * @Route("/manage", name="cp_nodes_website")
+     * @Template()
+     */
+    public function websiteAction()
+    {
+        $em       = $this->getDoctrine()->getManager();
+        $repo     = $em->getRepository('BtnNodesBundle:Node');
+        $topNodes = $repo->getRootNodes();
+
+        return array('topNodes' => $topNodes);
+    }
+
     /**
      * Lists all Nodes.
      *
@@ -92,15 +108,7 @@ class NodeControlController extends BaseController
             'id'         => $id
         ));
 
-        //valid or without post
-        if ($result === true || $result === null) {
-
-            return $this->renderJson($content, 'success');
-        //invalid
-        } elseif ($result === false) {
-
-            return $this->renderJson($content, 'error');
-        }
+        return $this->resolveView($result, $content);
     }
 
     /**
@@ -116,10 +124,77 @@ class NodeControlController extends BaseController
 
         //prepare content
         $content = $this->renderView('BtnNodesBundle:NodeControl:_content.html.twig', array(
-            'providers' => $providers
+            'providers' => $providers,
+            'node'      => $request->get('node')
         ));
 
         return $this->renderJson($content, 'succes');
+    }
+
+    /**
+     * assignContent node content
+     *
+     * @Route("/assign_content/{id}/{node}", name="cp_assign_content_for_node")
+     * @Template()
+     */
+    public function assignContentAction($id, $node, Request $request)
+    {
+        //get all content providers
+        $provider = $this->getRepository('BtnNodesBundle:NodeService')->find($id);
+
+        $form = $this->createForm($this->get($provider->getNodeProvider())->getForm());
+
+        //form processing
+        $result = $this->processContentForm($provider, $form, $request);
+
+        //prepare content
+        $content = $this->renderView('BtnNodesBundle:NodeControl:_assign_content.html.twig', array(
+            'form'     => $form->createView(),
+            'provider' => $provider,
+            'node'     => $node
+        ));
+
+        return $this->resolveView($result, $content);
+    }
+
+    private function resolveView($result, $content)
+    {
+        //valid or without post
+        if ($result === true || $result === null) {
+
+            return $this->renderJson($content, 'success');
+        //invalid
+        } elseif ($result === false) {
+
+            return $this->renderJson($content, 'error');
+        }
+    }
+
+    private function processContentForm($provider, &$form, $request)
+    {
+        if ($request->getMethod() == 'POST' && $request->get($form->getName())) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                //get correct route name from service
+                $service          = $this->get($provider->getNodeProvider());
+                $routeName        = $service->resolveRouteName($form->getData());
+                $controlRouteName = $service->resolveControlRouteName($form->getData());
+
+                //set routeName to the node
+                $node = $this->getRepository('BtnNodesBundle:Node')->find($request->get('node'));
+                $node->setRoute($routeName);
+                $node->setControlRoute($controlRouteName);
+                $node->setProvider($provider->getName());
+                $this->getManager()->persist($node);
+                $this->getManager()->flush();
+
+                return true;
+            } else {
+
+                return false;
+            }
+        }
     }
 
     private function processForm($entity, &$form, $request)
