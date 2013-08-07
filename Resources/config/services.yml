@@ -5,6 +5,14 @@ services:
         tags:
             - { name: router, priority: 0 }
 
+    btn_menu.provider:
+        class: Btn\NodesBundle\Provider\NodeMenuProvider
+        arguments:
+          - @knp_menu.factory
+          - @doctrine.orm.entity_manager
+        tags:
+          - { name: knp_menu.provider }
+
     gedmo.listener.tree:
         class: Gedmo\Tree\TreeListener
         tags:

@@ -1,12 +1,11 @@
 <li id="{{ node.id }}">
     <a href="{{ url('cp_edit_node', {'id': node.id}) }}" data-remote="formContainer" class="node-title">{{ node.title }}</a> |
-    <a href="{{ url('cp_content_for_node', {'node': node.id}) }}" data-select-content="input-id">
+
         {% if node.provider %}
             {{ node.provider }}
         {% else %}
-            select content for this node
+            no content attached
         {% endif %}
-    </a>
     <a href="{{ url('cp_add_node', {'id': node.id}) }}"><i class="icon-plus"></i></a>
     <a href="{{ url('cp_remove_node', {'id': node.id}) }}" data-confirm="Are you sure you want to delete?" ><i class="icon-minus"></i></a>
     <ul>

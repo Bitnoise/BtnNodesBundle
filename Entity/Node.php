@@ -4,7 +4,7 @@ namespace Btn\NodesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-
+use Knp\Menu\NodeInterface;
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="nodes")
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Btn\NodesBundle\Repository\NodeRepository")
  */
-class Node
+class Node implements NodeInterface
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -72,6 +72,11 @@ class Node
      * @ORM\Column(name="route", type="string", nullable=true)
      */
     private $route;
+
+    /**
+     * @ORM\Column(name="route_parameters", type="string", nullable=true)
+     */
+    private $routeParameters;
 
     /**
      * @ORM\Column(name="control_route", type="string", nullable=true)
@@ -253,6 +258,29 @@ class Node
     }
 
     /**
+     * Set routeParameters
+     *
+     * @param string $routeParameters
+     * @return Node
+     */
+    public function setRouteParameters($routeParameters)
+    {
+        $this->routeParameters = serialize($routeParameters);
+
+        return $this;
+    }
+
+    /**
+     * Get routeParameters
+     *
+     * @return string
+     */
+    public function getRouteParameters()
+    {
+        return unserialize($this->routeParameters);
+    }
+
+    /**
      * Add children
      *
      * @param \Btn\NodesBundle\Entity\Node $children
@@ -379,5 +407,19 @@ class Node
     public function getProvider()
     {
         return $this->provider;
+    }
+
+    public function getName()
+    {
+        return $this->title;
+    }
+
+    public function getOptions()
+    {
+        return array(
+            'uri' => $this->getUrl()
+            // 'route'           => $this->route,
+            // 'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
+        );
     }
 }

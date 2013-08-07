@@ -13,6 +13,7 @@
 
         {{ form_row(form.title) }}
         {{ form_row(form.route) }}
+        <a href="{{ url('cp_content_for_node', {'node': id}) }}" data-select-content="input-id">Select</a>
     </p>
 
     <div class="centered">
