@@ -1,24 +1,30 @@
-<h4>Node properties</h4>
+{% form_theme form 'BtnCrudBundle:Form:fields.html.twig' %}
 
-<form action="{{ path('cp_edit_node', {'id': id}) }}" class="form-horizontal" method="post" novalidate data-remote>
+<form action="{{ parent is defined ? path('cp_add_node', {'id': parent.id is defined ? parent.id : null}) : path('cp_edit_node', {'id': node.id}) }}" class="form-horizontal" method="post" novalidate data-remote>
     {{ form_errors(form) }}
-    <p>
-        <div class="input-prepend">
-          <span class="add-on">/about-us/</span>
-          <input class="span6" id="prependedInput" type="text" placeholder="slug">
+
+    {{ form_row(form.title) }}
+
+    <div class="control-group">
+        {{ form_errors(form.slug) }}
+        {{ form_label(form.slug) }}
+        <div class="controls">
+            <div class="input-prepend">
+              <span class="add-on">/{{ node.fullSlug(true) }}</span>
+              {{ form_widget(form.slug) }}
+            </div>
         </div>
-
-        {{ form_row(form.slug) }}
-
-
-        {{ form_row(form.title) }}
-        {{ form_row(form.route) }}
-        <a href="{{ url('cp_content_for_node', {'node': id}) }}" data-select-content="input-id">Select</a>
-    </p>
-
-    <div class="centered">
-        <input type="submit" class="btn btn-small" value="Save changes"/>
     </div>
+
+    {{ form_row(form.metaTitle) }}
+    {{ form_row(form.metaKeywords) }}
+    {{ form_row(form.metaDescription) }}
+
+      <div class="control-group">
+        <div class="controls">
+            <input type="submit" class="btn btn-small" value="Save changes"/>
+        </div>
+      </div>
 
     {{ form_rest(form) }}
 </form>

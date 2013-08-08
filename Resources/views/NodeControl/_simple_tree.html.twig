@@ -1,15 +1,18 @@
-<li id="{{ node.id }}" >
+<li id="node-{{ node.id }}" >
     {% if node.lvl > 0 %}
-        <a href="#" title="edit">{{ node.title }}</a> <em>/{{ node.slug }}</em> |
+        <a href="#" title="edit" data-modal-title="Edit item settings" data-manage-node="{{ url('cp_edit_node', {'id': node.id}) }}">{{ node.title }}</a> <em>/{{ node.slug }}</em> |
         <em class="provider">
             {% if node.provider %}
-                {{ node.provider }} {% if node.controlRoute %}<a href="{{ node.controlRoute }}">edit</a>{% endif %}
+                <a href="#" title="change content" data-manage-content="{{ path('cp_content_for_node', {'node': node.id}) }}">{{ node.provider }}</a> &nbsp;
+                {% if node.controlRoute %}<a href="{{ path(node.controlRoute, node.controlRouteParameters) }}">edit</a>{% endif %}
             {% else %}
-                no content assigned
+                <a href="#" title="attach content" data-manage-content="{{ path('cp_content_for_node', {'node': node.id}) }}">no content assigned</a>
             {% endif %}
         </em>
+        | <em class="node-actions"><a href="#" title="edit" data-modal-title="Create new item" data-manage-node="{{ url('cp_add_node', {'id': node.id}) }}">+</a>
+        <a href="{{ url('cp_remove_node', {'id': node.id}) }}" data-confirm="Are you sure you want to delete?">-</a></em>
 
-    {% else %}<h4>{{ node.title }}</h4>{% endif %}
+    {% else %}<h4>{{ node.title }} <em class="node-actions"><a href="#" title="edit" data-modal-title="Create new item" data-manage-node="{{ url('cp_add_node', {'id': node.id}) }}">+</a> <a href="{{ url('cp_remove_node', {'id': node.id}) }}" data-confirm="Are you sure you want to delete?">-</a></em></h4>{% endif %}
     <ul>
         {% for node in node.children %}
             {% include 'BtnNodesBundle:NodeControl:_simple_tree.html.twig' %}

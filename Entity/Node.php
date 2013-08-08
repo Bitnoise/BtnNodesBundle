@@ -5,6 +5,9 @@ namespace Btn\NodesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\Menu\NodeInterface;
+use Btn\BaseBundle\Util\Text;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="nodes")
@@ -23,11 +26,13 @@ class Node implements NodeInterface
 
     /**
      * @ORM\Column(name="title", type="string", length=64)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(name="slug", type="string", length=64)
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -79,6 +84,11 @@ class Node implements NodeInterface
     private $routeParameters;
 
     /**
+     * @ORM\Column(name="control_route_parameters", type="string", nullable=true)
+     */
+    private $controlRouteParameters;
+
+    /**
      * @ORM\Column(name="control_route", type="string", nullable=true)
      */
     private $controlRoute;
@@ -93,6 +103,21 @@ class Node implements NodeInterface
      */
     private $url;
 
+    /**
+     * @ORM\Column(name="meta_title", type="string", nullable=true)
+     */
+    private $metaTitle;
+
+    /**
+     * @ORM\Column(name="meta_description", type="text", nullable=true)
+     */
+    private $metaDescription;
+
+    /**
+     * @ORM\Column(name="meta_keywords", type="text", nullable=true)
+     */
+    private $metaKeywords;
+
     public function getId()
     {
         return $this->id;
@@ -101,8 +126,6 @@ class Node implements NodeInterface
     public function setTitle($title)
     {
         $this->title = $title;
-        //tmp
-        $this->slug = $title;
     }
 
     public function getTitle()
@@ -117,7 +140,7 @@ class Node implements NodeInterface
 
     public function setSlug($slug)
     {
-        return $this->slug = $slug;
+        return $this->slug = Text::slugify($slug);
     }
 
     public function setParent(Node $parent = null)
@@ -303,10 +326,11 @@ class Node implements NodeInterface
         $this->children->removeElement($children);
     }
 
+
     /**
      * @return string
      */
-    public function getFullSlug()
+    public function getFullSlug($withoutThisNode = false)
     {
         $slug       = "";
         $parentNode = $this->getParent();
@@ -317,7 +341,9 @@ class Node implements NodeInterface
             }
         }
 
-        $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
+        if (!$withoutThisNode) {
+            $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
+        }
 
         return $slug;
     }
@@ -359,8 +385,6 @@ class Node implements NodeInterface
         if ($parentNode != null) {
             $this->url = $this->getFullSlug();
         }
-
-        //fix url for all childrens ?
      }
 
     /**
@@ -421,5 +445,98 @@ class Node implements NodeInterface
             // 'route'           => $this->route,
             // 'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
         );
+    }
+
+
+    /**
+     * Set routeParameters
+     *
+     * @param string $routeParameters
+     * @return Node
+     */
+    public function setControlRouteParameters($routeParameters)
+    {
+        $this->routeParameters = serialize($routeParameters);
+
+        return $this;
+    }
+
+    /**
+     * Get routeParameters
+     *
+     * @return string
+     */
+    public function getControlRouteParameters()
+    {
+        return unserialize($this->routeParameters);
+    }
+
+    /**
+     * Set metaTitle
+     *
+     * @param string $metaTitle
+     * @return Node
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
+    
+        return $this;
+    }
+
+    /**
+     * Get metaTitle
+     *
+     * @return string 
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
+    }
+
+    /**
+     * Set metaDescription
+     *
+     * @param string $metaDescription
+     * @return Node
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+    
+        return $this;
+    }
+
+    /**
+     * Get metaDescription
+     *
+     * @return string 
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * Set metaKeywords
+     *
+     * @param string $metaKeywords
+     * @return Node
+     */
+    public function setMetaKeywords($metaKeywords)
+    {
+        $this->metaKeywords = $metaKeywords;
+    
+        return $this;
+    }
+
+    /**
+     * Get metaKeywords
+     *
+     * @return string 
+     */
+    public function getMetaKeywords()
+    {
+        return $this->metaKeywords;
     }
 }

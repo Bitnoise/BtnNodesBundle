@@ -6,8 +6,11 @@ interface NodeContentProviderInterface
 {
     public function getForm();
 
-    public function resolveRouteName($dataForm = array());
+    public function resolveRoute($dataForm = array());
 
-    public function resolveControlRouteName($dataForm = array());
+    public function resolveRouteParameters($dataForm = array());
 
+    public function resolveControlRoute($dataForm = array());
+
+    public function resolveControlRouteParameters($dataForm = array());
 }

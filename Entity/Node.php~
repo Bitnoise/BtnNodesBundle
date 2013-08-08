@@ -4,6 +4,9 @@ namespace Btn\NodesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\Menu\NodeInterface;
+use Btn\BaseBundle\Util\Text;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\Tree(type="nested")
@@ -12,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Btn\NodesBundle\Repository\NodeRepository")
  */
-class Node
+class Node implements NodeInterface
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -23,11 +26,13 @@ class Node
 
     /**
      * @ORM\Column(name="title", type="string", length=64)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(name="slug", type="string", length=64)
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -74,6 +79,16 @@ class Node
     private $route;
 
     /**
+     * @ORM\Column(name="route_parameters", type="string", nullable=true)
+     */
+    private $routeParameters;
+
+    /**
+     * @ORM\Column(name="control_route_parameters", type="string", nullable=true)
+     */
+    private $controlRouteParameters;
+
+    /**
      * @ORM\Column(name="control_route", type="string", nullable=true)
      */
     private $controlRoute;
@@ -88,6 +103,21 @@ class Node
      */
     private $url;
 
+    /**
+     * @ORM\Column(name="meta_title", type="string", nullable=true)
+     */
+    private $metaTitle;
+
+    /**
+     * @ORM\Column(name="meta_description", type="text", nullable=true)
+     */
+    private $metaDescription;
+
+    /**
+     * @ORM\Column(name="meta_keywords", type="text", nullable=true)
+     */
+    private $metaKeywords;
+
     public function getId()
     {
         return $this->id;
@@ -96,8 +126,6 @@ class Node
     public function setTitle($title)
     {
         $this->title = $title;
-        //tmp
-        $this->slug = $title;
     }
 
     public function getTitle()
@@ -112,7 +140,7 @@ class Node
 
     public function setSlug($slug)
     {
-        return $this->slug = $slug;
+        return $this->slug = Text::slugify($slug);
     }
 
     public function setParent(Node $parent = null)
@@ -253,6 +281,29 @@ class Node
     }
 
     /**
+     * Set routeParameters
+     *
+     * @param string $routeParameters
+     * @return Node
+     */
+    public function setRouteParameters($routeParameters)
+    {
+        $this->routeParameters = serialize($routeParameters);
+
+        return $this;
+    }
+
+    /**
+     * Get routeParameters
+     *
+     * @return string
+     */
+    public function getRouteParameters()
+    {
+        return unserialize($this->routeParameters);
+    }
+
+    /**
      * Add children
      *
      * @param \Btn\NodesBundle\Entity\Node $children
@@ -275,10 +326,11 @@ class Node
         $this->children->removeElement($children);
     }
 
+
     /**
      * @return string
      */
-    public function getFullSlug()
+    public function getFullSlug($withoutThisNode = false)
     {
         $slug       = "";
         $parentNode = $this->getParent();
@@ -289,7 +341,9 @@ class Node
             }
         }
 
-        $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
+        if (!$withoutThisNode) {
+            $slug = $this->getLvl() !== 0 ? $slug . $this->getSlug() : '';
+        }
 
         return $slug;
     }
@@ -331,7 +385,89 @@ class Node
         if ($parentNode != null) {
             $this->url = $this->getFullSlug();
         }
-
-        //fix url for all childrens ?
      }
+
+    /**
+     * Set controlRoute
+     *
+     * @param string $controlRoute
+     * @return Node
+     */
+    public function setControlRoute($controlRoute)
+    {
+        $this->controlRoute = $controlRoute;
+
+        return $this;
+    }
+
+    /**
+     * Get controlRoute
+     *
+     * @return string
+     */
+    public function getControlRoute()
+    {
+        return $this->controlRoute;
+    }
+
+    /**
+     * Set provider
+     *
+     * @param string $provider
+     * @return Node
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * Get provider
+     *
+     * @return string
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    public function getName()
+    {
+        return $this->title;
+    }
+
+    public function getOptions()
+    {
+        return array(
+            'uri' => $this->getUrl()
+            // 'route'           => $this->route,
+            // 'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
+        );
+    }
+
+
+    /**
+     * Set routeParameters
+     *
+     * @param string $routeParameters
+     * @return Node
+     */
+    public function setControlRouteParameters($routeParameters)
+    {
+        $this->routeParameters = serialize($routeParameters);
+
+        return $this;
+    }
+
+    /**
+     * Get routeParameters
+     *
+     * @return string
+     */
+    public function getControlRouteParameters()
+    {
+        return unserialize($this->routeParameters);
+    }
 }

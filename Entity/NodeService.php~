@@ -128,4 +128,27 @@ class NodeService
     {
         return $this->bundle;
     }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return NodeService
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

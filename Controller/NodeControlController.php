@@ -55,19 +55,24 @@ class NodeControlController extends BaseController
     public function addAction(Request $request)
     {
         $parent = $this->findEntity('BtnNodesBundle:Node', $request->get('id'));
-        $node = new Node();
-        $node->setTitle('new item');
+        $node   = new Node();
         if ($parent) {
             $node->setParent($parent);
         }
+        $form   = $this->createForm(new NodeType(), $node);
+        $result = null;
 
-        $this->getManager()->persist($node);
-        $this->getManager()->flush();
+        //form processing
+        $result = $this->processForm($node, $form, $request);
 
-        $msg = $this->get('translator')->trans('node.created');
-        $this->get('session')->getFlashBag()->add('success', $msg);
+        //prepare content
+        $content = $this->renderView('BtnNodesBundle:NodeControl:_form.html.twig', array(
+            'form'   => $form->createView(),
+            'node'   => $node,
+            'parent' => $parent
+        ));
 
-        return $this->redirect($this->generateUrl('cp_nodes'));
+        return $this->resolveView($result, $content);
     }
 
     /**
@@ -84,7 +89,7 @@ class NodeControlController extends BaseController
         $msg = $this->get('translator')->trans('node.removed');
         $this->get('session')->getFlashBag()->add('success', $msg);
 
-        return $this->redirect($this->generateUrl('cp_nodes'));
+        return $this->redirect($this->generateUrl('cp_nodes_website'));
     }
 
     /**
@@ -104,8 +109,8 @@ class NodeControlController extends BaseController
 
         //prepare content
         $content = $this->renderView('BtnNodesBundle:NodeControl:_form.html.twig', array(
-            'form'       => $form->createView(),
-            'id'         => $id
+            'form' => $form->createView(),
+            'node' => $node
         ));
 
         return $this->resolveView($result, $content);
@@ -177,14 +182,18 @@ class NodeControlController extends BaseController
 
             if ($form->isValid()) {
                 //get correct route name from service
-                $service          = $this->get($provider->getNodeProvider());
-                $routeName        = $service->resolveRouteName($form->getData());
-                $controlRouteName = $service->resolveControlRouteName($form->getData());
+                $service                = $this->get($provider->getNodeProvider());
+                $route                  = $service->resolveRoute($form->getData());
+                $routeParameters        = $service->resolveRouteParameters($form->getData());
+                $controlRoute           = $service->resolveControlRoute($form->getData());
+                $controlRouteParameters = $service->resolveControlRouteParameters($form->getData());
 
                 //set routeName to the node
                 $node = $this->getRepository('BtnNodesBundle:Node')->find($request->get('node'));
-                $node->setRoute($routeName);
-                $node->setControlRoute($controlRouteName);
+                $node->setRoute($route);
+                $node->setRouteParameters($routeParameters);
+                $node->setControlRoute($controlRoute);
+                $node->setControlRouteParameters($controlRouteParameters);
                 $node->setProvider($provider->getName());
                 $this->getManager()->persist($node);
                 $this->getManager()->flush();
@@ -205,7 +214,13 @@ class NodeControlController extends BaseController
             if ($form->isValid()) {
                 $em = $this->getManager();
                 $em->persist($entity);
+                //fix url for all entity childrens?
+                foreach ($entity->getChildren() as $node) {
+                    $node->setUrl($node->getFullSlug());
+                    $em->persist($node);
+                }
                 $em->flush();
+
 
                 return true;
             } else {
