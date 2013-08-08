@@ -29,11 +29,13 @@ class NodeController extends BaseController
             $uri = str_replace($this->get('request')->getBaseUrl(), '', $uri);
             $match = $this->get('router')->match($uri);
 
-            if (isset($match['_controller'])) {
+            //prevent recursive loop here
+            if (isset($match['_controller']) && $match['_controller'] !== 'Btn\NodesBundle\Controller\NodeController::resolveAction') {
 
                 //some additional controller attributes
                 $context = array(
-                    'url' => $url
+                    'url'  => $url,
+                    'node' => $node
                 );
 
                 //store as referrer
