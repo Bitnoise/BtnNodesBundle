@@ -1,4 +1,8 @@
 services:
+    btn_menu.loader:
+        class: Btn\NodesBundle\Provider\NodeLoader
+        arguments: ["@knp_menu.factory"]
+
     btn.router:
         class: Btn\NodesBundle\Router\Router
         arguments: ["@service_container"]
@@ -9,9 +13,15 @@ services:
         class: Btn\NodesBundle\Provider\NodeMenuProvider
         arguments:
           - @knp_menu.factory
+          - @btn_menu.loader
           - @doctrine.orm.entity_manager
         tags:
           - { name: knp_menu.provider }
+
+    btn.route.content_provider:
+        class: Btn\NodesBundle\Service\RouteContentProvider
+        arguments:
+            availableRoutes: %btn.nodes.availableRoutes%
 
     gedmo.listener.tree:
         class: Gedmo\Tree\TreeListener
@@ -19,3 +29,4 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
+

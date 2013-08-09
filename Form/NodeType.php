@@ -15,6 +15,7 @@ class NodeType extends AbstractType
                 'class' => 'control-label'
             )))
             ->add('title', null, array('label' => 'Menu name'))
+            ->add('visible', null, array('label' => 'Show in menu'))
             ->add('metaTitle')
             ->add('metaDescription')
             ->add('metaKeywords')

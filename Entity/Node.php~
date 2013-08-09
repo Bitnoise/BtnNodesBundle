@@ -31,8 +31,7 @@ class Node implements NodeInterface
     private $title;
 
     /**
-     * @ORM\Column(name="slug", type="string", length=64)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="slug", type="string", length=64, nullable=true)
      */
     private $slug;
 
@@ -117,6 +116,11 @@ class Node implements NodeInterface
      * @ORM\Column(name="meta_keywords", type="text", nullable=true)
      */
     private $metaKeywords;
+
+    /**
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = 1;
 
     public function getId()
     {
@@ -469,5 +473,79 @@ class Node implements NodeInterface
     public function getControlRouteParameters()
     {
         return unserialize($this->routeParameters);
+    }
+
+    /**
+     * Set metaTitle
+     *
+     * @param string $metaTitle
+     * @return Node
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get metaTitle
+     *
+     * @return string
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
+    }
+
+    /**
+     * Set metaDescription
+     *
+     * @param string $metaDescription
+     * @return Node
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get metaDescription
+     *
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * Set metaKeywords
+     *
+     * @param string $metaKeywords
+     * @return Node
+     */
+    public function setMetaKeywords($metaKeywords)
+    {
+        $this->metaKeywords = $metaKeywords;
+
+        return $this;
+    }
+
+    /**
+     * Get metaKeywords
+     *
+     * @return string
+     */
+    public function getMetaKeywords()
+    {
+        return $this->metaKeywords;
+    }
+
+    public function __toString()
+    {
+        return str_pad($this->title, strlen($this->title) + $this->lvl, "_", STR_PAD_LEFT);
     }
 }

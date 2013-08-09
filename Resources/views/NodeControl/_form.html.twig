@@ -16,12 +16,15 @@
         </div>
     </div>
 
+
+
     {{ form_row(form.metaTitle) }}
     {{ form_row(form.metaKeywords) }}
     {{ form_row(form.metaDescription) }}
 
       <div class="control-group">
         <div class="controls">
+            {{ form_row(form.visible) }}
             <input type="submit" class="btn btn-small" value="Save changes"/>
         </div>
       </div>

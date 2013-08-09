@@ -31,8 +31,7 @@ class Node implements NodeInterface
     private $title;
 
     /**
-     * @ORM\Column(name="slug", type="string", length=64)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="slug", type="string", length=64, nullable=true)
      */
     private $slug;
 
@@ -117,6 +116,11 @@ class Node implements NodeInterface
      * @ORM\Column(name="meta_keywords", type="text", nullable=true)
      */
     private $metaKeywords;
+
+    /**
+     * @ORM\Column(name="visible", type="boolean", options={"default" = 1})
+     */
+    private $visible = true;
 
     public function getId()
     {
@@ -440,13 +444,15 @@ class Node implements NodeInterface
 
     public function getOptions()
     {
-        return array(
-            'uri' => $this->getUrl()
-            // 'route'           => $this->route,
-            // 'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
-        );
+        if ($this->getUrl()) {
+            return array('uri' => $this->getUrl());
+        } else {
+            return array(
+                'route'           => $this->route,
+                'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
+            );
+        }
     }
-
 
     /**
      * Set routeParameters
@@ -480,14 +486,14 @@ class Node implements NodeInterface
     public function setMetaTitle($metaTitle)
     {
         $this->metaTitle = $metaTitle;
-    
+
         return $this;
     }
 
     /**
      * Get metaTitle
      *
-     * @return string 
+     * @return string
      */
     public function getMetaTitle()
     {
@@ -503,14 +509,14 @@ class Node implements NodeInterface
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
-    
+
         return $this;
     }
 
     /**
      * Get metaDescription
      *
-     * @return string 
+     * @return string
      */
     public function getMetaDescription()
     {
@@ -526,17 +532,45 @@ class Node implements NodeInterface
     public function setMetaKeywords($metaKeywords)
     {
         $this->metaKeywords = $metaKeywords;
-    
+
         return $this;
     }
 
     /**
      * Get metaKeywords
      *
-     * @return string 
+     * @return string
      */
     public function getMetaKeywords()
     {
         return $this->metaKeywords;
+    }
+
+    public function __toString()
+    {
+        return str_pad($this->title, strlen($this->title) + $this->lvl, "_", STR_PAD_LEFT);
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     * @return Node
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
     }
 }

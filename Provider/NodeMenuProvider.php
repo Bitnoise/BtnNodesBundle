@@ -4,6 +4,7 @@ namespace Btn\NodesBundle\Provider;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Knp\Menu\Loader\LoaderInterface;
 
 class NodeMenuProvider implements MenuProviderInterface
 {
@@ -11,15 +12,16 @@ class NodeMenuProvider implements MenuProviderInterface
      * @var FactoryInterface
      */
     protected $factory = null;
-
+    protected $loader = null;
     protected $em = null;
 
     /**
      * @param FactoryInterface $factory the menu factory used to create the menu item
      */
-    public function __construct(FactoryInterface $factory, $em)
+    public function __construct(FactoryInterface $factory, LoaderInterface $loader, $em)
     {
         $this->factory = $factory;
+        $this->loader  = $loader;
         $this->em      = $em;
     }
 
@@ -42,7 +44,8 @@ class NodeMenuProvider implements MenuProviderInterface
         /*
          * Populate your menu here
          */
-        $menuItem = $this->factory->createFromNode($menu);
+        // $menuItem = $this->factory->createFromNode($menu);
+        $menuItem = $this->loader->load($menu);
 
         //add class if provided
         if (isset($options['class'])) {

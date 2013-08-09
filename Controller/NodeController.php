@@ -44,6 +44,8 @@ class NodeController extends BaseController
 
                 //something here?
 
+                //
+
                 return $response;
             }
         }
