@@ -1,4 +1,11 @@
 services:
+    btn_menu.voter:
+        class: Btn\NodesBundle\Voter\Voter
+        arguments:
+            - @service_container
+        tags:
+            - { name: knp_menu.voter }
+
     btn_menu.loader:
         class: Btn\NodesBundle\Provider\NodeLoader
         arguments: ["@knp_menu.factory"]
