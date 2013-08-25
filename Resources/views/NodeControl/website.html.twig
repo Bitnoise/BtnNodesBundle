@@ -7,13 +7,13 @@
 
 <div class="row-fluid" id="nodesManager">
     {% for node in topNodes %}
-        {% if loop.index is even %}<div class="row-fluid">{% endif %}
+
                 <div class="span6">
                     <ul class="tree" id="tree-{{ node.id }}">
                         {% include 'BtnNodesBundle:NodeControl:_simple_tree.html.twig' %}
                     </ul>
                 </div>
-        {% if loop.index is odd %}</div>{% endif %}
+
     {% endfor %}
 
     <div class="span12">
