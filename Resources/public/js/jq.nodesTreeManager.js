@@ -41,7 +41,7 @@
         this.attachFormSubmit();
 
 
-        console.log('attach assign content modal');
+        // console.log('attach assign content modal');
     };
 
     Plugin.prototype.createModal = function () {

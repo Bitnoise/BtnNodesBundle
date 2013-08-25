@@ -19,6 +19,7 @@ class NodeType extends AbstractType
             ->add('metaTitle')
             ->add('metaDescription')
             ->add('metaKeywords')
+            ->add('link', null, array('label' => 'Direct url'))
         ;
     }
 

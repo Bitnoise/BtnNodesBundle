@@ -23,6 +23,14 @@ class NodeController extends BaseController
     {
         //resolve node by url
         if ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url)) {
+            //if node contains valid url - redirect
+            $link = $node->getLink();
+            if (!empty($link)) {
+
+                return $this->redirect($link);
+            }
+
+
             // $route = '/' . $node->getRoute();
             // $match = $this->get('router')->match($route);
             $uri = $this->get('router')->generate($node->getRoute(), $node->getRouteParameters());

@@ -122,6 +122,11 @@ class Node implements NodeInterface
      */
     private $visible = true;
 
+    /**
+     * @ORM\Column(name="link", type="string", nullable=true)
+     */
+    private $link;
+
     public function getId()
     {
         return $this->id;
@@ -572,5 +577,28 @@ class Node implements NodeInterface
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * Set link
+     *
+     * @param string $link
+     * @return Node
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    
+        return $this;
+    }
+
+    /**
+     * Get link
+     *
+     * @return string 
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 }
