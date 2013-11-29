@@ -53,5 +53,13 @@ btn_nodes:
 $ php app/console doctrine:schema:update --force
 ```
 
+### Step 5: Set up avalible routes
+
+``` yml
+# app/conig/parameters.yml
+btn.nodes.availableRoutes:
+    homepage: Homepage
+    # ...
+```
 
 ### Add gedmo orm mappings
