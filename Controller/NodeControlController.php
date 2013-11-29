@@ -33,6 +33,25 @@ class NodeControlController extends BaseController
     }
 
     /**
+     * List all nodes for modal picker
+     *
+     * @Route("/list-modal", name="cp_nodes_list_modal")
+     * @Template()
+     **/
+    public function listModalAction()
+    {
+        $em       = $this->getDoctrine()->getManager();
+        $repo     = $em->getRepository('BtnNodesBundle:Node');
+        $topNodes = $repo->getRootNodes();
+
+        return array(
+            'topNodes' => $topNodes,
+            'expanded' => false,
+            'isModal' => true
+        );
+    }
+
+    /**
      * Lists all Nodes.
      *
      * @Route("/", name="cp_nodes")
