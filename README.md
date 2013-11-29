@@ -57,9 +57,11 @@ $ php app/console doctrine:schema:update --force
 
 ``` yml
 # app/conig/parameters.yml
-btn.nodes.availableRoutes:
-    homepage: Homepage
+parameters:
     # ...
+    btn.nodes.availableRoutes:
+        homepage: Homepage
+        # ...
 ```
 
 ### Add gedmo orm mappings
