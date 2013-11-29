@@ -64,4 +64,14 @@ parameters:
         # ...
 ```
 
+### Step 6: Add BtnNodesBundle to the assetic.bundle config
+
+``` yml
+# app/config/config.yml
+assetic:
+    #...
+    bundles:
+        - BtnNodesBundle
+```
+
 ### Add gedmo orm mappings
