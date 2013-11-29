@@ -31,6 +31,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         new Btn\NodesBundle\BtnNodesBundle(),
     );
 }
