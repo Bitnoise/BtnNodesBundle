@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="nodes")
+ * @ORM\Table(name="nodes", indexes={@ORM\Index(name="idx_slug", columns={"slug"})})
  * use repository for handy tree functions
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Btn\NodesBundle\Repository\NodeRepository")
@@ -588,14 +588,14 @@ class Node implements NodeInterface
     public function setLink($link)
     {
         $this->link = $link;
-    
+
         return $this;
     }
 
     /**
      * Get link
      *
-     * @return string 
+     * @return string
      */
     public function getLink()
     {
