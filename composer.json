@@ -19,12 +19,17 @@
         "gedmo/doctrine-extensions": "*",
         "symfony-cmf/routing-bundle": "*",
         "knplabs/knp-menu-bundle":"dev-master",
-        "bitnoise/base-bundle": "dev-sf23"
+        "bitnoise/base-bundle": "dev-sf23",
+        "bitnoise/media-bundle": "dev-master"
     },
     "repositories": [
         {
             "type": "vcs",
             "url":  "https://github.com/Bitnoise/BtnBaseBundle.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/Bitnoise/BtnMediaBundle.git"
         }
     ],
     "autoload": {
