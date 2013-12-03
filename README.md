@@ -76,3 +76,9 @@ assetic:
 ```
 
 ### Add gedmo orm mappings
+
+[docs](https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/symfony2.md#mapping)
+
+### Setup BtnMediaBundle
+
+[docs](https://github.com/Bitnoise/BtnMediaBundle/blob/master/README.md)
