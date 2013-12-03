@@ -21,7 +21,7 @@ sample cms structure tree for menus
 }
 ```
 
-### Step 2: Enable the bundle
+### Step 2: Enable the bundles
 
 ``` php
 <?php
@@ -31,6 +31,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         new Btn\NodesBundle\BtnNodesBundle(),
     );
