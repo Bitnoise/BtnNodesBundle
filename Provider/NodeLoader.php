@@ -9,10 +9,12 @@ use Knp\Menu\Loader\LoaderInterface;
 class NodeLoader implements LoaderInterface
 {
     private $factory;
+    private $container;
 
-    public function __construct(FactoryInterface $factory)
+    public function __construct(FactoryInterface $factory, $container)
     {
         $this->factory = $factory;
+        $this->container = $container;
     }
 
     public function load($data)
@@ -20,6 +22,9 @@ class NodeLoader implements LoaderInterface
         if (!$data instanceof NodeInterface) {
             throw new \InvalidArgumentException(sprintf('Unsupported data. Expected Knp\Menu\NodeInterface but got ', is_object($data) ? get_class($data) : gettype($data)));
         }
+
+        //put the reuqest there
+        $data->setRequest($this->container->get('request'));
 
         $item = $this->factory->createItem($data->getName(), $data->getOptions());
 

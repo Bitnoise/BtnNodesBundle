@@ -21,6 +21,24 @@ class NodeController extends BaseController
      */
     public function resolveAction($url = null)
     {
+
+        //301 redirect if url has backslash at the end
+        if ('/' != $url AND '/' == substr($url, -1)) {
+            $testDir = realpath(__DIR__ . '/../../../../../../web/' . $url);
+            if (!is_dir($testDir) AND !file_exists($testDir)) {
+                $request = $this->getRequest();
+                $qs = $request->getQueryString();
+                if ($qs) {
+                    $qs = '?' . $qs;
+                }
+                $redirectUrl = $request->getBaseUrl() . '/' . trim($url, '/') . $qs;
+                return $this->redirect($redirectUrl, 301);
+            }
+        }
+
+        //fix url if has trailing slash
+        $url = rtrim($url, '/');
+
         //resolve node by url
         if ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url)) {
             //if node contains valid url - redirect
@@ -51,8 +69,6 @@ class NodeController extends BaseController
                 $response = $this->forward($match['_controller'], array_merge($match, $context));
 
                 //something here?
-
-                //
 
                 return $response;
             }

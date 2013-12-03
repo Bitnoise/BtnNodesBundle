@@ -1,0 +1,10 @@
+<li id="node-{{ node.id }}" data-id="{{ node.id }}" >
+    {% if node.lvl > 0 %}
+        <a href="#" title="select" class="node-select-link" data-modal-title="" data-id="{{ node.id }}">{{ node.title }}</a> <em>/{{ node.slug }}</em>
+    {% else %}<h4>{{ node.title }} </h4>{% endif %}
+    <ul>
+        {% for node in node.children %}
+            {% include 'BtnNodesBundle:NodeControl:_simple_tree_modal.html.twig' %}
+        {% endfor %}
+    </ul>
+</li>

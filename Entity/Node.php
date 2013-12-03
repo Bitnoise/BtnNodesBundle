@@ -118,6 +118,22 @@ class Node implements NodeInterface
     private $metaKeywords;
 
     /**
+     * @ORM\Column(name="og_title", type="string", nullable=true)
+     */
+    private $ogTitle;
+
+    /**
+     * @ORM\Column(name="og_description", type="text", nullable=true)
+     */
+    private $ogDescription;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Btn\MediaBundle\Entity\MediaFile")
+     * @ORM\JoinColumn(name="og_image_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ogImage;
+
+    /**
      * @ORM\Column(name="visible", type="boolean", options={"default" = 1})
      */
     private $visible = true;
@@ -126,6 +142,8 @@ class Node implements NodeInterface
      * @ORM\Column(name="link", type="string", nullable=true)
      */
     private $link;
+
+    private $request = null;
 
     public function getId()
     {
@@ -447,10 +465,16 @@ class Node implements NodeInterface
         return $this->title;
     }
 
+    public function setRequest($request)
+    {
+        $this->request = $request;
+    }
+
     public function getOptions()
     {
         if ($this->getUrl()) {
-            return array('uri' => $this->getUrl());
+            $baseUrl = !empty($this->request) ? $this->request->getBaseUrl() . '/' : '';
+            return array('uri' => $baseUrl . $this->getUrl());
         } else {
             return array(
                 'route'           => $this->route,
@@ -549,6 +573,75 @@ class Node implements NodeInterface
     public function getMetaKeywords()
     {
         return $this->metaKeywords;
+    }
+
+    /**
+     * Set ogTitle
+     *
+     * @param string $ogTitle
+     * @return Node
+     */
+    public function setOgTitle($ogTitle)
+    {
+        $this->ogTitle = $ogTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get ogTitle
+     *
+     * @return string
+     */
+    public function getOgTitle()
+    {
+        return $this->ogTitle;
+    }
+
+    /**
+     * Set ogDescription
+     *
+     * @param string $ogDescription
+     * @return Node
+     */
+    public function setOgDescription($ogDescription)
+    {
+        $this->ogDescription = $ogDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get ogDescription
+     *
+     * @return string
+     */
+    public function getOgDescription()
+    {
+        return $this->ogDescription;
+    }
+
+    /**
+     * Set ogImage
+     *
+     * @param \Btn\MediaBundle\Entity\MediaFile $image
+     * @return Node
+     */
+    public function setOgImage(\Btn\MediaBundle\Entity\MediaFile $ogImage = null)
+    {
+        $this->ogImage = $ogImage;
+
+        return $this;
+    }
+
+    /**
+     * Get ogImage
+     *
+     * @return \Btn\MediaBundle\Entity\MediaFile
+     */
+    public function getOgImage()
+    {
+        return $this->ogImage;
     }
 
     public function __toString()

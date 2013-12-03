@@ -1,3 +1,14 @@
+/* dummy span */
+.nodes-list > div[class*="span"]:first-child {
+  height: 0;
+  margin-bottom: 0;
+  display: none;
+}
+
+.nodes-list > div[class*="span"] {
+  margin-top: 25px;
+}
+
 .node-root {
     margin-bottom: 25px;
 }
@@ -41,4 +52,13 @@ ul.tree li em.provider {
 ul.tree li em.provider a {
     text-decoration: underline;
     color: #999;
+}
+
+.node-select-link{
+    font-weight: normal;
+}
+
+.node-select-link.selected {
+    font-weight: bold;
+    color: #005580;
 }

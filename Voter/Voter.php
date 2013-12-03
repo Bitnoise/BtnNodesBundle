@@ -32,7 +32,7 @@ class Voter implements VoterInterface
      */
     public function matchItem(ItemInterface $item)
     {
-        if ($item->getUri() === ltrim($this->container->get('request')->getPathInfo(), '/')) {
+        if (ltrim($item->getUri(), '/') === ltrim($this->container->get('request')->getPathInfo(), '/')) {
             return true;
         }
 

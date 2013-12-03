@@ -8,7 +8,7 @@ services:
 
     btn_menu.loader:
         class: Btn\NodesBundle\Provider\NodeLoader
-        arguments: ["@knp_menu.factory"]
+        arguments: ["@knp_menu.factory", "@service_container"]
 
     btn.router:
         class: Btn\NodesBundle\Router\Router

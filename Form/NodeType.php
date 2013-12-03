@@ -19,6 +19,12 @@ class NodeType extends AbstractType
             ->add('metaTitle')
             ->add('metaDescription')
             ->add('metaKeywords')
+            ->add('ogTitle')
+            ->add('ogDescription')
+            ->add('ogImage', null, array(
+                'attr'  => array('class' => 'btn-media'),
+                'empty_value' => 'Choose image'
+                ))
             ->add('link', null, array('label' => 'Direct url'))
         ;
     }
