@@ -37,3 +37,9 @@ services:
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
 
+    btn.twig.node_menu_extension:
+        class: Btn\NodesBundle\Twig\NodeMenuExtension
+        arguments:
+            nodeMenuProvider: @btn_menu.provider
+        tags:
+            - { name: twig.extension }
