@@ -14,6 +14,7 @@ class NodeMenuProvider implements MenuProviderInterface
     protected $factory = null;
     protected $loader = null;
     protected $em = null;
+    protected $nodeArrayCache = array();
 
     /**
      * @param FactoryInterface $factory the menu factory used to create the menu item
@@ -35,16 +36,12 @@ class NodeMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = array())
     {
-        $menu = $this->em->getRepository('BtnNodesBundle:Node')->getNodeForSlug($name);
+        $menu = $this->getNodeForSlugWithCache($name);
 
         if ($menu === null) {
             throw new \InvalidArgumentException(sprintf('The menu "%s" is not defined.', $name));
         }
 
-        /*
-         * Populate your menu here
-         */
-        // $menuItem = $this->factory->createFromNode($menu);
         $menuItem = $this->loader->load($menu);
 
         //add class if provided
@@ -64,8 +61,20 @@ class NodeMenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = array())
     {
-        $menu = $this->em->getRepository('BtnNodesBundle:Node')->getNodeForSlug($name);
+        $menu = $this->getNodeForSlugWithCache($name);
 
         return $menu !== null;
+    }
+
+    /**
+     * Get node for slug with local array cache to prevent unnecessary
+     */
+    protected function getNodeForSlugWithCache($name)
+    {
+        if (!array_key_exists($name, $this->nodeArrayCache)) {
+            $this->nodeArrayCache[$name] = $this->em->getRepository('BtnNodesBundle:Node')->getNodeForSlug($name);
+        }
+
+        return $this->nodeArrayCache[$name];
     }
 }
