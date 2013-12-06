@@ -193,6 +193,16 @@ class Node implements NodeInterface
     }
 
     /**
+     *
+     */
+    public function clearChildren()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+
+        return $this;
+    }
+
+    /**
      * Set lft
      *
      * @param integer $lft
