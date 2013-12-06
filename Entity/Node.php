@@ -482,12 +482,14 @@ class Node implements NodeInterface
 
     public function getOptions()
     {
-        if ($this->getUrl()) {
+        if (!$this->getRoute()) {
+            return array();
+        } elseif ($this->getUrl()) {
             $baseUrl = !empty($this->request) ? $this->request->getBaseUrl() . '/' : '';
             return array('uri' => $baseUrl . $this->getUrl());
         } else {
             return array(
-                'route'           => $this->route,
+                'route'           => $this->getRoute(),
                 'routeParameters' => is_array($this->getRouteParameters()) ? $this->getRouteParameters() : array()
             );
         }
