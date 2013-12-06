@@ -54,4 +54,21 @@ class NodeRepository extends NestedTreeRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param int $root
+     *
+     * @return Node[]
+     */
+    public function getNodesForRoot($root)
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->select('n')
+            ->where('n.root = :root')
+            ->orderBy('n.lft', 'ASC')
+            ->setParameter(':root', $root)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }
