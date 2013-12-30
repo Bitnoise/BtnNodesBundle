@@ -4,7 +4,7 @@
         <em class="provider">
             {% if node.provider %}
                 <a href="#" title="change content" data-manage-content="{{ path('cp_content_for_node', {'node': node.id}) }}">{{ node.provider }}</a> &nbsp;
-                {% if node.controlRoute %}<a href="{{ path(node.controlRoute, node.controlRouteParameters) }}">edit</a>{% endif %}
+                {% if node.controlRoute and node.controlRouteParameters %}<a href="{{ path(node.controlRoute, node.controlRouteParameters) }}">edit</a>{% endif %}
             {% else %}
                 <a href="#" title="attach content" data-manage-content="{{ path('cp_content_for_node', {'node': node.id}) }}">no content assigned</a>
             {% endif %}
