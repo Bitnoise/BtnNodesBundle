@@ -23,6 +23,7 @@
 {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     {% stylesheets
         '@BtnNodesBundle/Resources/public/css/*'
     %}
@@ -32,6 +33,7 @@
 
 
 {% block javascripts %}
+    {{ parent() }}
     {% javascripts
         '@BtnNodesBundle/Resources/public/js/jq.confirmModal.js'
         '@BtnNodesBundle/Resources/public/js/jq.nodesTreeManager.js'
