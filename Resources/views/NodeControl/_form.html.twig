@@ -5,18 +5,16 @@
 
     {{ form_row(form.title) }}
 
-    <div class="control-group">
+    <div class="form-group">
         {{ form_errors(form.slug) }}
         {{ form_label(form.slug) }}
-        <div class="controls">
-            <div class="input-prepend">
-              <span class="add-on">/{{ node.fullSlug(true) }}</span>
+        <div class="col-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon">/{{ node.fullSlug(true) }}</span>
               {{ form_widget(form.slug) }}
             </div>
         </div>
     </div>
-
-
 
     {{ form_row(form.link) }}
     {{ form_row(form.metaTitle) }}
@@ -25,11 +23,11 @@
     {{ form_row(form.ogTitle) }}
     {{ form_row(form.ogDescription) }}
     {{ form_row(form.ogImage) }}
+    {{ form_row(form.visible) }}
 
-      <div class="control-group">
-        <div class="controls">
-            {{ form_row(form.visible) }}
-            <input type="submit" class="btn btn-small" value="Save changes"/>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn-primary btn-small btn-sm" value="Save changes"/>
         </div>
       </div>
 
