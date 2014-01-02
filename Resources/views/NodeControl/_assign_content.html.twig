@@ -1,15 +1,14 @@
-<div>
-    <form action="{{ path('cp_assign_content_for_node', {'id': provider.id, 'node': node}) }}" class="form-horizontal" method="post" novalidate data-remote>
-        {{ form_errors(form) }}
-        <p>
-            {{ form_widget(form) }}
+{% form_theme form 'BtnCrudBundle:Form:fields.html.twig' %}
 
-        </p>
+<form action="{{ path('cp_assign_content_for_node', {'id': provider.id, 'node': node}) }}" class="form-horizontal" method="post" novalidate data-remote>
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
 
-        <div class="centered">
-            <input type="submit" class="btn btn-small" value="Save changes"/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn btn-success btn-small btn-sm" value="Save changes"/>
         </div>
+    </div>
 
-        {{ form_rest(form) }}
-    </form>
-</div>
+    {{ form_rest(form) }}
+</form>
