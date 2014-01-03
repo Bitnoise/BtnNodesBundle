@@ -1,6 +1,6 @@
 <li id="node-{{ node.id }}" >
     {% if node.lvl > 0 %}
-        <a href="#" title="edit" data-modal-title="{% trans %}node.edit_item_settings{% transend %}" data-manage-node="{{ url('cp_edit_node', {id: node.id}) }}">{{ node.title }}</a> <em>/{{ node.slug }}</em> |
+        <a href="#" title="edit" data-modal-title="{% trans %}node.edit_item_settings{% endtrans %}" data-manage-node="{{ url('cp_edit_node', {id: node.id}) }}">{{ node.title }}</a> <em>/{{ node.slug }}</em> |
         <em class="provider">
             {% if node.provider %}
                 <a href="#" title="change content" data-manage-content="{{ path('cp_content_for_node', {node: node.id}) }}">{{ node.provider }}</a> &nbsp;
