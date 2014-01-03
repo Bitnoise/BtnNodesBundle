@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="span6" id="nodesContainer">
-    <h4>Website structure</h4>
+    <h4>{% trans %}node.website_structure{% transend %}</h4>
 
 <div class="tabbable tabs-left">
   <ul class="nav nav-tabs">
@@ -22,10 +22,10 @@
   </div>
 </div>
 
-    <a href="{{ path('cp_add_node') }}" class="btn btn-primary">Create New Menu</a>
+    <a href="{{ path('cp_add_node') }}" class="btn btn-primary">{% trans %}node.create_new_menu{% transend %}</a>
   </div>
   <div class="span6" id="formContainer">
-      Click on the left side to edit node
+      {% trans %}node.click_on_left_side_to_edit{% endtrans %}
   </div>
 </div>
 
