@@ -14,7 +14,7 @@ services:
         class: Btn\NodesBundle\Router\Router
         arguments: ["@service_container"]
         tags:
-            - { name: router, priority: 0 }
+            - { name: router, priority: priority: %btn_nodes.router_priority% }
 
     btn_menu.provider:
         class: Btn\NodesBundle\Provider\NodeMenuProvider
