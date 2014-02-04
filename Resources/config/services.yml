@@ -43,3 +43,8 @@ services:
             nodeMenuProvider: @btn_menu.provider
         tags:
             - { name: twig.extension }
+
+    btn_nodes.listener.request:
+        class: Btn\NodesBundle\Listener\RequestListener
+        tags:
+            - { name: kernel.event_subscriber }
