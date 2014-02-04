@@ -4,12 +4,14 @@ namespace Btn\NodesBundle\Router;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Catch all with lowest priority and pass it to the NodeController
@@ -47,7 +49,7 @@ class Router implements RouterInterface
                     '_controller'   => 'BtnNodesBundle:Node:resolve',
                     'url'           => '',
                 ),
-                array('url' => "[a-zA-Z0-9\-_\/]*")
+                array('url' => "[a-zA-Z0-9\-_\/]+")
             )
         );
     }
@@ -63,18 +65,28 @@ class Router implements RouterInterface
      */
     public function match($pathinfo)
     {
+        $requestAttributes = $this->container->get('request')->attributes;
+
+        if ($requestAttributes->has('_controller')) {
+            throw new ResourceNotFoundException('Routing is already done');
+        }
+
+        if (HttpKernelInterface::SUB_REQUEST === $requestAttributes->get('_request_type')) {
+            throw new ResourceNotFoundException('Skipping subrequest');
+        }
+
         $urlMatcher = new UrlMatcher($this->routeCollection, $this->getContext());
 
         $result = $urlMatcher->match($pathinfo);
         if (!empty($result)) {
-            // The route matches, now check if it actually exists
-            // $em = $this->container->get('doctrine.orm.entity_manager');
-            // $nodeRepo = $em->getRepository('BtnNodesBundle:Node');
-            // $node = $nodeRepo->getNodeTranslationForUrl($result['url']);
+            $em = $this->container->get('doctrine.orm.entity_manager');
+            $nodeRepo = $em->getRepository('BtnNodesBundle:Node');
+            $node = $nodeRepo->getNodeForUrl($result['url']);
+            $result['node'] = $node;
 
-            // if (is_null($node)) {
-            //     throw new ResourceNotFoundException('No page found for slug ' . $pathinfo);
-            // }
+            if (is_null($node)) {
+                throw new ResourceNotFoundException(sprintf('No page found for slug %s', $pathinfo));
+            }
         }
 
         return $result;
@@ -92,6 +104,8 @@ class Router implements RouterInterface
      */
     public function generate($name, $parameters = array(), $absolute = false)
     {
+        throw new RouteNotFoundException('This router do not generate');
+
         $this->urlGenerator = new UrlGenerator($this->routeCollection, $this->context);
 
         return $this->urlGenerator->generate($name, $parameters, $absolute);

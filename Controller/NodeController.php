@@ -19,7 +19,7 @@ class NodeController extends BaseController
     /**
      * Resolve slug router
      */
-    public function resolveAction($url = null)
+    public function resolveAction($url = null, Node $node = null)
     {
 
         //301 redirect if url has backslash at the end
@@ -40,7 +40,7 @@ class NodeController extends BaseController
         $url = rtrim($url, '/');
 
         //resolve node by url
-        if ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url)) {
+        if ($node || ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url))) {
             //if node contains valid url - redirect
             $link = $node->getLink();
             if (!empty($link)) {
