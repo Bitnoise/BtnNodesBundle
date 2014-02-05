@@ -19,28 +19,10 @@ class NodeController extends BaseController
     /**
      * Resolve slug router
      */
-    public function resolveAction($url = null)
+    public function resolveAction($url = null, Node $node = null)
     {
-
-        //301 redirect if url has backslash at the end
-        if ('/' != $url AND '/' == substr($url, -1)) {
-            $testDir = realpath(__DIR__ . '/../../../../../../web/' . $url);
-            if (!is_dir($testDir) AND !file_exists($testDir)) {
-                $request = $this->getRequest();
-                $qs = $request->getQueryString();
-                if ($qs) {
-                    $qs = '?' . $qs;
-                }
-                $redirectUrl = $request->getBaseUrl() . '/' . trim($url, '/') . $qs;
-                return $this->redirect($redirectUrl, 301);
-            }
-        }
-
-        //fix url if has trailing slash
-        $url = rtrim($url, '/');
-
         //resolve node by url
-        if ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url)) {
+        if ($node || ($node = $this->getRepository('BtnNodesBundle:Node')->getNodeForUrl($url))) {
             //if node contains valid url - redirect
             $link = $node->getLink();
             if (!empty($link)) {
