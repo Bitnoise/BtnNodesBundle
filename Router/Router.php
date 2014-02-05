@@ -4,7 +4,6 @@ namespace Btn\NodesBundle\Router;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RouteCollection;
@@ -106,8 +105,6 @@ class Router implements RouterInterface
      */
     public function generate($name, $parameters = array(), $absolute = false)
     {
-        throw new RouteNotFoundException('This router do not generate');
-
         $this->urlGenerator = new UrlGenerator($this->routeCollection, $this->context);
 
         return $this->urlGenerator->generate($name, $parameters, $absolute);
