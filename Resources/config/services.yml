@@ -14,7 +14,7 @@ services:
         class: Btn\NodesBundle\Router\Router
         arguments: ["@service_container"]
         tags:
-            - { name: router, priority: 0 }
+            - { name: router, priority: %btn_nodes.router_priority% }
 
     btn_menu.provider:
         class: Btn\NodesBundle\Provider\NodeMenuProvider
@@ -43,3 +43,8 @@ services:
             nodeMenuProvider: @btn_menu.provider
         tags:
             - { name: twig.extension }
+
+    btn_nodes.listener.request:
+        class: Btn\NodesBundle\Listener\RequestListener
+        tags:
+            - { name: kernel.event_subscriber }
