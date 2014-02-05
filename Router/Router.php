@@ -86,8 +86,8 @@ class Router implements RouterInterface
 
             if (is_null($node)) {
                 throw new ResourceNotFoundException(sprintf('No page found for slug %s', $pathinfo));
-            } elseif (!$node->getRoute()) {
-                throw new ResourceNotFoundException(sprintf('Empty route for slug %s', $pathinfo));
+            } elseif (!$node->getRoute() && !$node->getLink()) {
+                throw new ResourceNotFoundException(sprintf('Empty route and link for slug %s', $pathinfo));
             }
         }
 
