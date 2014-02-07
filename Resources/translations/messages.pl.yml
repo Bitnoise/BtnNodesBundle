@@ -9,3 +9,15 @@ node:
     edit_item_settings: Edytuj ustawienia elementu
     website_sitemap: Mapa strony
     choose_site: Wybierz stronę
+    form:
+        slug: Przyjazny URL
+        title: Nazwa menu
+        visible: Pokaż menu
+        metaTitle: Tytuł meta
+        metaDescription: Opis meta
+        metaKeywords: Słowa kluczowe
+        ogTitle: Tytuł OG
+        ogDescription: Opis OG
+        ogImage: Ikona OG
+        ogImage_empty_value: Wybierz obrazek
+        link: Docelowy link
