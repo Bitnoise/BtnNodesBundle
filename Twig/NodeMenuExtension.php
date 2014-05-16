@@ -20,12 +20,18 @@ class NodeMenuExtension extends \Twig_Extension
     {
         return array(
             'btn_menu_has' => new \Twig_Function_Method($this, 'has'),
+            'btn_get_node' => new \Twig_Function_Method($this, 'getNodeByUri'),
         );
     }
 
     public function has($name, array $options = array())
     {
         return $this->nodeMenuProvider->has($name, $options);
+    }
+
+    public function getNodeByUri($uri)
+    {
+        return $this->nodeMenuProvider->getNodesByUri($uri);
     }
 
     public function getName()

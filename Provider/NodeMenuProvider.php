@@ -96,4 +96,15 @@ class NodeMenuProvider implements MenuProviderInterface
 
         return $this->nodeArrayCache[$name];
     }
+
+    /**
+     * Get get node by uri
+     *
+     * @return Node
+     * @author
+     **/
+    public function getNodesbyUri($uri)
+    {
+        return $this->em->getRepository('BtnNodesBundle:Node')->getNodeForUrl(ltrim($uri, '/'));
+    }
 }
