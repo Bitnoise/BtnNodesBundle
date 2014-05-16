@@ -19,6 +19,7 @@
         "gedmo/doctrine-extensions": "*",
         "symfony-cmf/routing-bundle": "*",
         "knplabs/knp-menu-bundle":"dev-master",
+        "bitnoise/base-breadcrumb":"dev-master",
         "bitnoise/base-bundle": "dev-sf23",
         "bitnoise/media-bundle": "dev-sf23-bs3"
     },

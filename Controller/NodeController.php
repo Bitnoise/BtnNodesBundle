@@ -48,6 +48,20 @@ class NodeController extends BaseController
 
                 //store as referrer
                 $this->get('session')->set('_btn_slug', $url);
+
+                //breadcrumb
+
+
+
+
+
+
+                if ($node) {
+                    # code...
+                }
+
+                //breadcrumb
+
                 $response = $this->forward($match['_controller'], array_merge($match, $context));
 
                 //something here?
