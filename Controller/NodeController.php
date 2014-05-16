@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Btn\NodesBundle\Entity\Node;
+use Btn\BreadcrumbBundle\Model\Breadcrumb;
 
 /**
  * Nodes resolver.
@@ -30,11 +31,11 @@ class NodeController extends BaseController
                 return $this->redirect($link);
             }
 
-
             // $route = '/' . $node->getRoute();
             // $match = $this->get('router')->match($route);
+            $request = $this->get('request');
             $uri = $this->get('router')->generate($node->getRoute(), $node->getRouteParameters());
-            $uri = str_replace($this->get('request')->getBaseUrl(), '', $uri);
+            $uri = str_replace($request->getBaseUrl(), '', $uri);
             $match = $this->get('router')->match($uri);
 
             //prevent recursive loop here
@@ -50,17 +51,16 @@ class NodeController extends BaseController
                 $this->get('session')->set('_btn_slug', $url);
 
                 //breadcrumb
-
-
-
-
-
-
                 if ($node) {
-                    # code...
-                }
+                    $bcManager = $this->get('btn.bc');
+                    $path = $this->getRepository('BtnNodesBundle:Node')->getPath($node);
+                    foreach ($path as $pathNode) {
+                        if ($pathNode->getRoute()) {
+                            $bcManager->createItem($pathNode->getTitle(), $request->getBaseUrl() . '/' . $pathNode->getUrl());
+                        }
+                    }
 
-                //breadcrumb
+                }
 
                 $response = $this->forward($match['_controller'], array_merge($match, $context));
 
