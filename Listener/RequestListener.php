@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pbmc\ControlBundle\Entity\User;
 
 class RequestListener implements EventSubscriberInterface
 {
