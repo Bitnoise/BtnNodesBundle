@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Knp\Menu\NodeInterface;
 use Btn\BaseBundle\Util\Text;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Gedmo\Tree(type="nested")
@@ -143,7 +144,10 @@ class Node implements NodeInterface
      */
     private $link;
 
-    private $request = null;
+    /**
+     * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface
+     */
+    private $router = null;
 
     public function getId()
     {
@@ -475,9 +479,9 @@ class Node implements NodeInterface
         return $this->title;
     }
 
-    public function setRequest($request)
+    public function setRouter(UrlGeneratorInterface $router)
     {
-        $this->request = $request;
+        $this->router = $router;
     }
 
     public function getOptions()
@@ -485,8 +489,9 @@ class Node implements NodeInterface
         if (!$this->getRoute()) {
             return array();
         } elseif ($this->getUrl()) {
-            $baseUrl = !empty($this->request) ? $this->request->getBaseUrl() . '/' : '';
-            return array('uri' => $baseUrl . $this->getUrl());
+            return array(
+                'uri' => $this->router ? $this->router->generate('_btn_slug', array('url' => $this->getUrl())) : $this->getUrl(),
+            );
         } else {
             return array(
                 'route'           => $this->getRoute(),

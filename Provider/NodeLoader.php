@@ -24,7 +24,7 @@ class NodeLoader implements LoaderInterface
         }
 
         //put the reuqest there
-        $data->setRequest($this->container->get('request'));
+        $data->setRouter($this->container->get('router'));
 
         $item = $this->factory->createItem($data->getName(), $data->getOptions());
 
