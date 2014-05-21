@@ -39,11 +39,12 @@ class Router implements RouterInterface
         $this->container       = $container;
         $this->routeCollection = new RouteCollection();
 
+        $routerPrefix = $this->container->getParameter('btn_nodes.router_prefix');
 
         $this->routeCollection->add(
             '_btn_slug',
             new Route(
-                '/{url}',
+                $routerPrefix . '{url}',
                 array(
                     '_controller'   => 'BtnNodesBundle:Node:resolve',
                     'url'           => '',

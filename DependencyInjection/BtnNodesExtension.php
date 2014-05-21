@@ -23,6 +23,7 @@ class BtnNodesExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('btn_nodes.router_priority', $config['router_priority']);
+        $container->setParameter('btn_nodes.router_prefix', $config['router_prefix']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
