@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->scalarNode('router_priority')->defaultValue(0)->end()
+            ->scalarNode('router_prefix')->defaultValue('/')->end()
             ->end()
         ;
 
