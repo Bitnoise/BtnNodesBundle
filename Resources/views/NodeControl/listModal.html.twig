@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Choose site:</h4>
+            <h4 class="modal-title">{% trans %}node.choose_site{% endtrans %}:</h4>
         </div>
         <div class="modal-body" style="{% if expanded == true %}height: 70%;{% endif %}">
 
@@ -24,7 +24,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary submit">Submit</button>
+          <button type="button" class="btn btn-primary submit">{% trans %}crud.save{% endtrans %}</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

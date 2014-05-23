@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h4>Website sitemap</h4>
+<h4>{% trans %}node.website_sitemap{% endtrans %}</h4>
 
 <div class="row-fluid nodes-list" id="nodesManager">
     <div class="span12"></div>
@@ -16,7 +16,7 @@
 
     <div class="span12">
         <br/><br/>
-        <a href="#" data-modal-title="Create new menu" data-manage-node="{{ url('cp_add_node') }}" class="btn btn-primary">Create new menu</a>
+        <a href="#" data-modal-title="{% trans %}node.create_new_menu{% endtrans %}" data-manage-node="{{ url('cp_add_node') }}" class="btn btn-primary">{% trans %}node.create_new_menu{% endtrans %}</a>
     </div>
 </div>
 

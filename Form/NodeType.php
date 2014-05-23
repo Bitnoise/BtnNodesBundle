@@ -14,18 +14,19 @@ class NodeType extends AbstractType
             ->add('slug', null, array('label' => 'Nice URL' ,'label_attr' => array(
                 'class' => 'control-label'
             )))
-            ->add('title', null, array('label' => 'Menu name'))
-            ->add('visible', null, array('label' => 'Show in menu'))
-            ->add('metaTitle')
-            ->add('metaDescription')
-            ->add('metaKeywords')
-            ->add('ogTitle')
-            ->add('ogDescription')
+            ->add('title', null, array('label' => 'node.form.title'))
+            ->add('visible', null, array('label' => 'node.form.visible'))
+            ->add('metaTitle', null, array('label' => 'node.form.metaTitle'))
+            ->add('metaDescription', null, array('label' => 'node.form.metaDescription'))
+            ->add('metaKeywords', null, array('label' => 'node.form.metaKeywords'))
+            ->add('ogTitle', null, array('label' => 'node.form.ogTitle'))
+            ->add('ogDescription', null, array('label' => 'node.form.ogDescription'))
             ->add('ogImage', null, array(
+                'label' => 'node.form.ogImage',
                 'attr'  => array('class' => 'btn-media'),
-                'empty_value' => 'Choose image'
+                'empty_value' => 'node.form.ogImage_empty_value'
                 ))
-            ->add('link', null, array('label' => 'Direct url'))
+            ->add('link', null, array('label' => 'node.form.link'))
         ;
     }
 
