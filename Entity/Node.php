@@ -144,6 +144,8 @@ class Node implements NodeInterface
      */
     private $link;
 
+    private $isParent;
+
     /**
      * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface
      */
@@ -201,6 +203,9 @@ class Node implements NodeInterface
      */
     public function clearChildren()
     {
+        if (count($this->getChildren()->getValues()) > 0 && $this->getIsParent() == 0) {
+            $this->setIsParent(true);
+        }
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
 
         return $this;
@@ -710,5 +715,25 @@ class Node implements NodeInterface
     public function getLink()
     {
         return $this->link;
+    }
+
+    /**
+     * Set flag if node has children
+     *
+     * @return boolean
+     */
+    public function setIsParent($isParent)
+    {
+        return $this->isParent = $isParent;
+    }
+
+    /**
+     * Get isParent
+     *
+     * @return boolean
+     */
+    public function getIsParent()
+    {
+        return $this->isParent;
     }
 }

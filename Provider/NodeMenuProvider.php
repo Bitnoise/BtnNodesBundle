@@ -42,6 +42,11 @@ class NodeMenuProvider implements MenuProviderInterface
             throw new \InvalidArgumentException(sprintf('The menu "%s" is not defined.', $name));
         }
 
+        $menuItem = $this->loader->load($menu);
+        //add class if provided
+        if (isset($options['class'])) {
+            $menuItem->setChildrenAttribute('class', $options['class']);
+        }
         // if it's root element of menu then get full nodes list by root
         if ($menu->getId() === $menu->getRoot()) {
             $nodes = $this->em->getRepository('BtnNodesBundle:Node')->getNodesForRoot($menu->getRoot());
@@ -53,19 +58,17 @@ class NodeMenuProvider implements MenuProviderInterface
             //fill children object from nodes list
             $lvlPointers = array();
             foreach ($nodes as $node) {
+                if ($node->getIsParent()) {
+                    if (count($menuItem->getChild($node->getName())) > 0) {
+                        $menuItem->getChild($node->getName())->setAttribute('class','submenu');
+                    }
+                }
                 $lvl = $node->getLvl();
                 $lvlPointers[$lvl] = $node;
                 if ($lvl > 0) {
                     $lvlPointers[$lvl-1]->addChildren($node);
                 }
             }
-        }
-
-        $menuItem = $this->loader->load($menu);
-
-        //add class if provided
-        if (isset($options['class'])) {
-            $menuItem->setChildrenAttribute('class', $options['class']);
         }
 
         return $menuItem;
