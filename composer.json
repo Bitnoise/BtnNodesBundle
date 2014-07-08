@@ -18,7 +18,7 @@
         "symfony/symfony": "2.*",
         "gedmo/doctrine-extensions": "*",
         "symfony-cmf/routing-bundle": "*",
-        "knplabs/knp-menu-bundle":"1.1.*",
+        "knplabs/knp-menu-bundle":"2.0.*@dev",
         "bitnoise/breadcrumb-bundle":"dev-master",
         "bitnoise/base-bundle": "dev-sf23-bs3",
         "bitnoise/media-bundle": "dev-sf23-bs3"
