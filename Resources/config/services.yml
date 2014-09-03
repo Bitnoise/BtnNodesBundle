@@ -41,6 +41,7 @@ services:
         class: Btn\NodesBundle\Twig\NodeMenuExtension
         arguments:
             nodeMenuProvider: @btn_menu.provider
+            em: @doctrine.orm.entity_manager
         tags:
             - { name: twig.extension }
 
